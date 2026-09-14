@@ -2,7 +2,6 @@ package com.dsa.assistant.model;
 
 import com.dsa.assistant.model.enums.ProgressStatus;
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -13,11 +12,6 @@ import java.time.LocalDateTime;
         @UniqueConstraint(name = "uk_progress_user_problem", columnNames = {"user_id", "problem_id"})
     }
 )
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Progress {
 
     @Id
@@ -37,12 +31,79 @@ public class Progress {
     private ProgressStatus status;
 
     @Column(nullable = false)
-    @Builder.Default
     private Integer attempts = 0;
 
     @Column(nullable = false)
-    @Builder.Default
     private Integer hintsUsed = 0;
 
     private LocalDateTime solvedAt;
+
+    public Progress() {
+    }
+
+    public Progress(Long id, User user, Problem problem, ProgressStatus status, Integer attempts, Integer hintsUsed, LocalDateTime solvedAt) {
+        this.id = id;
+        this.user = user;
+        this.problem = problem;
+        this.status = status;
+        this.attempts = attempts != null ? attempts : 0;
+        this.hintsUsed = hintsUsed != null ? hintsUsed : 0;
+        this.solvedAt = solvedAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Problem getProblem() {
+        return problem;
+    }
+
+    public void setProblem(Problem problem) {
+        this.problem = problem;
+    }
+
+    public ProgressStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProgressStatus status) {
+        this.status = status;
+    }
+
+    public Integer getAttempts() {
+        return attempts;
+    }
+
+    public void setAttempts(Integer attempts) {
+        this.attempts = attempts;
+    }
+
+    public Integer getHintsUsed() {
+        return hintsUsed;
+    }
+
+    public void setHintsUsed(Integer hintsUsed) {
+        this.hintsUsed = hintsUsed;
+    }
+
+    public LocalDateTime getSolvedAt() {
+        return solvedAt;
+    }
+
+    public void setSolvedAt(LocalDateTime solvedAt) {
+        this.solvedAt = solvedAt;
+    }
 }
