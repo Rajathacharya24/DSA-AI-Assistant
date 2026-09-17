@@ -56,6 +56,41 @@ public class ProblemService {
         }
     }
 
+    public ProblemDTO getProblem(String topic, String difficultyStr) {
+        List<Problem> problems;
+        Difficulty difficulty = null;
+        if (difficultyStr != null && !difficultyStr.isEmpty()) {
+            try {
+                difficulty = Difficulty.valueOf(difficultyStr.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                // ignore
+            }
+        }
+        
+        if (topic != null && !topic.isEmpty() && difficulty != null) {
+            problems = problemRepository.findByTopicNameIgnoreCaseAndDifficulty(topic, difficulty);
+        } else if (topic != null && !topic.isEmpty()) {
+            Topic t = topicRepository.findByName(topic.toUpperCase()).orElse(null);
+            if (t != null) {
+                problems = problemRepository.findByTopicId(t.getId());
+            } else {
+                problems = List.of();
+            }
+        } else if (difficulty != null) {
+            problems = problemRepository.findByDifficulty(difficulty);
+        } else {
+            problems = problemRepository.findAll();
+        }
+
+        if (problems.isEmpty()) {
+            throw new ProblemNotFoundException("No problem found matching criteria");
+        }
+        
+        // Return first one for now, could be random
+        return mapToDTO(problems.get(0));
+    }
+
+
     public ProblemDTO createProblem(CreateProblemDTO createProblemDTO) {
         String topicName = createProblemDTO.getTopic().toUpperCase();
         Topic topic = topicRepository.findByName(topicName)

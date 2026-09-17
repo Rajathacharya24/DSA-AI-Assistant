@@ -11,4 +11,5 @@ import java.util.List;
 public interface ProblemRepository extends JpaRepository<Problem, Long> {
     List<Problem> findByTopicId(Long topicId);
     List<Problem> findByDifficulty(Difficulty difficulty);
+    List<Problem> findByTopicNameIgnoreCaseAndDifficulty(String topicName, Difficulty difficulty);
 }
