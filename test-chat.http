@@ -24,3 +24,30 @@ Content-Type: application/json
 {
   "message": "Give me an easy Java array problem."
 }
+
+### Phase 5 tests
+
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "message": "Give me an easy array problem."
+}
+
+###
+
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "message": "Give me a hint for problem 1."
+}
+
+###
+
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "message": "Show my progress."
+}
