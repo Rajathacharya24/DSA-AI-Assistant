@@ -91,6 +91,14 @@ public class ProblemService {
     }
 
 
+    public String getHint(Long problemId, int hintLevel) {
+        Problem problem = problemRepository.findById(problemId)
+                .orElseThrow(() -> new ProblemNotFoundException("Problem not found with id: " + problemId));
+        return "Problem Title: " + problem.getTitle() + "\n" +
+               "Explanation: " + problem.getExplanation() + "\n" +
+               "Hint Level requested: " + hintLevel + ". Please generate a suitable hint without giving away the full solution.";
+    }
+
     public ProblemDTO createProblem(CreateProblemDTO createProblemDTO) {
         String topicName = createProblemDTO.getTopic().toUpperCase();
         Topic topic = topicRepository.findByName(topicName)
