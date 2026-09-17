@@ -4,11 +4,11 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AiChatService {
+public class AgentService {
 
     private final ChatClient chatClient;
 
-    public AiChatService(ChatClient.Builder chatClientBuilder) {
+    public AgentService(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder
                 .defaultSystem("You are an AI DSA Study Assistant.\n\n" +
                         "Your job is to help beginners learn Data Structures and Algorithms.\n\n" +
@@ -20,7 +20,11 @@ public class AiChatService {
                         "- Give hints when requested.\n" +
                         "- Explain time and space complexity.\n" +
                         "- Help users improve their Java code.\n" +
-                        "- Encourage learning rather than simply giving answers.")
+                        "- Encourage learning rather than simply giving answers.\n" +
+                        "- If the user asks for a problem, call the getProblem tool and return the problem details.\n" +
+                        "- If the user asks for a hint, call the getHint tool.\n" +
+                        "- If the user asks for their progress, call the getProgress tool. (Default userId is 1 if not specified).\n")
+                .defaultFunctions("getProblem", "getHint", "getProgress")
                 .build();
     }
 
