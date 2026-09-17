@@ -1,0 +1,26 @@
+### Test Chat API
+
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "message": "Explain arrays."
+}
+
+###
+
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "message": "Explain Big-O."
+}
+
+###
+
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "message": "Give me an easy Java array problem."
+}
