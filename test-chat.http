@@ -51,3 +51,30 @@ Content-Type: application/json
 {
   "message": "Show my progress."
 }
+
+### Phase 6 tests
+
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "message": "Give me another hint for problem 1. I want level 2."
+}
+
+###
+
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "message": "Give me the final hint for problem 1. Level 3."
+}
+
+###
+
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "message": "Show my progress again to see if hintsUsed increased."
+}
