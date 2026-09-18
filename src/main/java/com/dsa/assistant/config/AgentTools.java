@@ -27,7 +27,7 @@ public class AgentTools {
     
     @Bean
     @Description("Get a DSA problem by topic (e.g. ARRAY, STRING, TREE) and difficulty (e.g. EASY, MEDIUM, HARD). If user doesn't specify a topic, pass null.")
-    public Function<ProblemRequest, ProblemDTO> getProblem() {
+    public Function<ProblemRequest, ProblemDTO> problemTool() {
         return request -> problemService.getProblem(request.topic(), request.difficulty());
     }
 
@@ -35,7 +35,7 @@ public class AgentTools {
     
     @Bean
     @Description("Get a hint for a specific problem by problemId and hintLevel (1 for subtle, 2 for moderate, 3 for strong).")
-    public Function<HintRequest, String> getHint() {
+    public Function<HintRequest, String> hintTool() {
         return request -> problemService.getHint(request.problemId(), request.hintLevel());
     }
 
@@ -43,7 +43,7 @@ public class AgentTools {
     
     @Bean
     @Description("Get the learning progress of a user by userId. Shows solved problems and attempts. If userId is not specified, use 1.")
-    public Function<ProgressRequest, String> getProgress() {
+    public Function<ProgressRequest, String> progressTool() {
         return request -> {
             Long userId = request.userId() != null ? request.userId() : 1L;
             List<Progress> progressList = progressService.getProgressByUserId(userId);
