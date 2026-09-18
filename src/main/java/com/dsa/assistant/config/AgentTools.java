@@ -31,12 +31,15 @@ public class AgentTools {
         return request -> problemService.getProblem(request.topic(), request.difficulty());
     }
 
-    public record HintRequest(Long problemId, int hintLevel) {}
+    public record HintRequest(Long userId, Long problemId, int hintLevel) {}
     
     @Bean
-    @Description("Get a hint for a specific problem by problemId and hintLevel (1 for subtle, 2 for moderate, 3 for strong).")
+    @Description("Get a hint for a specific problem by problemId and hintLevel (1 for conceptual, 2 for specific, 3 for near-solution). Requires userId to track progress, default to 1 if not specified.")
     public Function<HintRequest, String> hintTool() {
-        return request -> problemService.getHint(request.problemId(), request.hintLevel());
+        return request -> {
+            Long userId = request.userId() != null ? request.userId() : 1L;
+            return problemService.getHint(userId, request.problemId(), request.hintLevel());
+        };
     }
 
     public record ProgressRequest(Long userId) {}
