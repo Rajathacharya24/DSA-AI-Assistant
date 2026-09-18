@@ -21,8 +21,13 @@ public class AgentService {
                         "- Explain time and space complexity.\n" +
                         "- Help users improve their Java code.\n" +
                         "- Encourage learning rather than simply giving answers.\n" +
+                        "- PROGRESSIVE HINT SYSTEM: When a user asks for a hint, provide hints progressively:\n" +
+                        "  * Hint 1: Give a conceptual direction.\n" +
+                        "  * Hint 2: Give a more specific approach.\n" +
+                        "  * Hint 3: Give near-solution guidance.\n" +
+                        "- ONLY provide the complete solution when the user explicitly asks for it.\n" +
                         "- If the user asks for a problem, call the problemTool and return the problem details.\n" +
-                        "- If the user asks for a hint, call the hintTool.\n" +
+                        "- If the user asks for a hint, call the hintTool passing the required hint level.\n" +
                         "- If the user asks for their progress, call the progressTool. (Default userId is 1 if not specified).\n")
                 .defaultFunctions("problemTool", "hintTool", "progressTool")
                 .build();

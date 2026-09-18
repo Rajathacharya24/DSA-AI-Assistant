@@ -19,10 +19,12 @@ public class ProblemService {
 
     private final ProblemRepository problemRepository;
     private final TopicRepository topicRepository;
+    private final ProgressService progressService;
 
-    public ProblemService(ProblemRepository problemRepository, TopicRepository topicRepository) {
+    public ProblemService(ProblemRepository problemRepository, TopicRepository topicRepository, ProgressService progressService) {
         this.problemRepository = problemRepository;
         this.topicRepository = topicRepository;
+        this.progressService = progressService;
     }
 
     public List<ProblemDTO> getAllProblems() {
@@ -91,12 +93,18 @@ public class ProblemService {
     }
 
 
-    public String getHint(Long problemId, int hintLevel) {
+    public String getHint(Long userId, Long problemId, int hintLevel) {
         Problem problem = problemRepository.findById(problemId)
                 .orElseThrow(() -> new ProblemNotFoundException("Problem not found with id: " + problemId));
+                
+        progressService.incrementHintsUsed(userId, problemId);
+        
         return "Problem Title: " + problem.getTitle() + "\n" +
-               "Explanation: " + problem.getExplanation() + "\n" +
-               "Hint Level requested: " + hintLevel + ". Please generate a suitable hint without giving away the full solution.";
+               "Explanation/Solution context: " + problem.getExplanation() + "\n" +
+               "Solution code: " + problem.getSolution() + "\n\n" +
+               "The user requested Hint Level " + hintLevel + ".\n" +
+               "Please generate a suitable hint based on the level (1=conceptual direction, 2=specific approach, 3=near-solution). " +
+               "Do NOT give away the full solution.";
     }
 
     public ProblemDTO createProblem(CreateProblemDTO createProblemDTO) {
