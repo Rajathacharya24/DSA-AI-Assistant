@@ -21,10 +21,10 @@ public class AgentService {
                         "- Explain time and space complexity.\n" +
                         "- Help users improve their Java code.\n" +
                         "- Encourage learning rather than simply giving answers.\n" +
-                        "- If the user asks for a problem, call the getProblem tool and return the problem details.\n" +
-                        "- If the user asks for a hint, call the getHint tool.\n" +
-                        "- If the user asks for their progress, call the getProgress tool. (Default userId is 1 if not specified).\n")
-                .defaultFunctions("getProblem", "getHint", "getProgress")
+                        "- If the user asks for a problem, call the problemTool and return the problem details.\n" +
+                        "- If the user asks for a hint, call the hintTool.\n" +
+                        "- If the user asks for their progress, call the progressTool. (Default userId is 1 if not specified).\n")
+                .defaultFunctions("problemTool", "hintTool", "progressTool")
                 .build();
     }
 
