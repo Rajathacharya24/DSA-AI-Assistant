@@ -39,4 +39,21 @@ public class AgentService {
                 .call()
                 .content();
     }
+
+    public com.dsa.assistant.dto.CodeReviewResponse reviewCode(String problemTitle, String problemDescription, String code) {
+        String prompt = String.format(
+                "Review the following Java code for the problem '%s'.\n\n" +
+                "Problem Description:\n%s\n\n" +
+                "Submitted Code:\n%s\n\n" +
+                "Analyze the code for correctness, time/space complexity, bugs, and code quality. " +
+                "Do NOT claim code is definitely correct without analyzing it. Keep the Java code review beginner-friendly. " +
+                "Return the feedback in the requested structured format.",
+                problemTitle, problemDescription, code
+        );
+        
+        return chatClient.prompt()
+                .user(prompt)
+                .call()
+                .entity(com.dsa.assistant.dto.CodeReviewResponse.class);
+    }
 }
