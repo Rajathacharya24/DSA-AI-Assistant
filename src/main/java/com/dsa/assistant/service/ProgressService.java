@@ -49,4 +49,26 @@ public class ProgressService {
         progress.setHintsUsed(progress.getHintsUsed() + 1);
         progressRepository.save(progress);
     }
+
+    public void updateProgressStatus(Long userId, Long problemId, boolean isCorrect) {
+        Optional<Progress> optionalProgress = progressRepository.findByUserIdAndProblemId(userId, problemId);
+        
+        Progress progress;
+        if (optionalProgress.isPresent()) {
+            progress = optionalProgress.get();
+        } else {
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
+            Problem problem = problemRepository.findById(problemId)
+                    .orElseThrow(() -> new IllegalArgumentException("Problem not found: " + problemId));
+            
+            progress = new Progress();
+            progress.setUser(user);
+            progress.setProblem(problem);
+            progress.setHintsUsed(0);
+        }
+        
+        progress.setStatus(isCorrect ? ProgressStatus.COMPLETED : ProgressStatus.ATTEMPTED);
+        progressRepository.save(progress);
+    }
 }
