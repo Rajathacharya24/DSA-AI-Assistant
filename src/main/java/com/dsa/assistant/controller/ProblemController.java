@@ -15,9 +15,11 @@ import java.util.List;
 public class ProblemController {
 
     private final ProblemService problemService;
+    private final com.dsa.assistant.service.CodeReviewService codeReviewService;
 
-    public ProblemController(ProblemService problemService) {
+    public ProblemController(ProblemService problemService, com.dsa.assistant.service.CodeReviewService codeReviewService) {
         this.problemService = problemService;
+        this.codeReviewService = codeReviewService;
     }
 
     @GetMapping
@@ -44,5 +46,13 @@ public class ProblemController {
     public ResponseEntity<ProblemDTO> createProblem(@Valid @RequestBody CreateProblemDTO createProblemDTO) {
         ProblemDTO createdProblem = problemService.createProblem(createProblemDTO);
         return new ResponseEntity<>(createdProblem, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{problemId}/submit")
+    public ResponseEntity<com.dsa.assistant.dto.CodeReviewResponse> submitCode(
+            @PathVariable Long problemId,
+            @Valid @RequestBody com.dsa.assistant.dto.CodeSubmitRequest request) {
+        com.dsa.assistant.dto.CodeReviewResponse response = codeReviewService.reviewAndSubmitCode(problemId, request);
+        return ResponseEntity.ok(response);
     }
 }
