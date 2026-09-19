@@ -68,7 +68,7 @@ public class ProgressService {
             progress.setHintsUsed(0);
         }
         
-        progress.setStatus(isCorrect ? ProgressStatus.COMPLETED : ProgressStatus.ATTEMPTED);
+        progress.setStatus(isCorrect ? ProgressStatus.SOLVED : ProgressStatus.ATTEMPTED);
         progressRepository.save(progress);
     }
 }
