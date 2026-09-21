@@ -78,3 +78,23 @@ Content-Type: application/json
 {
   "message": "Show my progress again to see if hintsUsed increased."
 }
+
+### Phase 7 tests
+
+POST http://localhost:8080/api/problems/1/submit
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "code": "public class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        return new int[]{0, 1};\n    }\n}"
+}
+
+###
+
+POST http://localhost:8080/api/problems/1/submit
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "code": "public class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        for (int i = 0; i < nums.length; i++) {\n            for (int j = i + 1; j < nums.length; j++) {\n                if (nums[i] + nums[j] == target) {\n                    return new int[]{i, j};\n                }\n            }\n        }\n        return new int[]{};\n    }\n}"
+}
