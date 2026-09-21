@@ -46,8 +46,9 @@ public class AgentService {
                 "Problem Description:\n%s\n\n" +
                 "Submitted Code:\n%s\n\n" +
                 "Analyze the code for correctness, time/space complexity, bugs, and code quality. " +
+                "In the 'feedback' field, you MUST include a logic explanation, any bugs found, and code quality assessment. " +
                 "Do NOT claim code is definitely correct without analyzing it. Keep the Java code review beginner-friendly. " +
-                "Return the feedback in the requested structured format.",
+                "Return the response strictly matching the requested structured format.",
                 problemTitle, problemDescription, code
         );
         
