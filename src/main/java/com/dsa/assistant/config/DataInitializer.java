@@ -118,11 +118,29 @@ public class DataInitializer implements CommandLineRunner {
         demoUser = userRepository.save(demoUser);
 
         // 4. Create Initial Progress & Sample Attempt
-        Progress progress = new Progress(null, demoUser, p1, ProgressStatus.SOLVED, 1, 0, LocalDateTime.now());
-        progressRepository.save(progress);
+        // Problem 1: Solved today
+        Progress progress1 = new Progress(null, demoUser, p1, ProgressStatus.SOLVED, 2, 1, LocalDateTime.now());
+        progressRepository.save(progress1);
 
-        Attempt attempt = new Attempt(null, demoUser, p1, "public int findLargest(int[] nums) { ... }", AttemptResult.ACCEPTED, null);
-        attemptRepository.save(attempt);
+        Attempt attempt1_1 = new Attempt(null, demoUser, p1, "public int findLargest(int[] nums) { return 0; }", AttemptResult.WRONG_ANSWER, LocalDateTime.now().minusDays(2));
+        attemptRepository.save(attempt1_1);
+        
+        Attempt attempt1_2 = new Attempt(null, demoUser, p1, "public int findLargest(int[] nums) { ... }", AttemptResult.ACCEPTED, LocalDateTime.now());
+        attemptRepository.save(attempt1_2);
+
+        // Problem 2: Solved yesterday (for streak)
+        Progress progress2 = new Progress(null, demoUser, p2, ProgressStatus.SOLVED, 1, 0, LocalDateTime.now().minusDays(1));
+        progressRepository.save(progress2);
+
+        Attempt attempt2 = new Attempt(null, demoUser, p2, "public int findSmallest(int[] nums) { ... }", AttemptResult.ACCEPTED, LocalDateTime.now().minusDays(1));
+        attemptRepository.save(attempt2);
+
+        // Problem 3: Attempted today, hints used
+        Progress progress3 = new Progress(null, demoUser, p3, ProgressStatus.IN_PROGRESS, 1, 2, null);
+        progressRepository.save(progress3);
+
+        Attempt attempt3 = new Attempt(null, demoUser, p3, "public int[] runningSum(int[] nums) { ... }", AttemptResult.WRONG_ANSWER, LocalDateTime.now());
+        attemptRepository.save(attempt3);
 
         log.info("Sample data initialization completed successfully.");
     }
