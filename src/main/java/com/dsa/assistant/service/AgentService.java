@@ -28,8 +28,9 @@ public class AgentService {
                         "- ONLY provide the complete solution when the user explicitly asks for it.\n" +
                         "- If the user asks for a problem, call the problemTool and return the problem details.\n" +
                         "- If the user asks for a hint, call the hintTool passing the required hint level.\n" +
-                        "- If the user asks for their progress, call the progressTool. (Default userId is 1 if not specified).\n")
-                .defaultFunctions("problemTool", "hintTool", "progressTool")
+                        "- If the user asks for their progress, call the progressTool. (Default userId is 1 if not specified).\n" +
+                        "- If the user asks what they should learn next, call the recommendationTool. (Default userId is 1 if not specified).\n")
+                .defaultFunctions("problemTool", "hintTool", "progressTool", "recommendationTool")
                 .build();
     }
 
