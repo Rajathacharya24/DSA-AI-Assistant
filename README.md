@@ -12,11 +12,7 @@ An AI-powered Data Structures and Algorithms (DSA) learning assistant agent. Bui
 *   **Lombok**
 *   **Maven**
 
-## Prerequisites
 
-*   Java 21 or higher
-*   Maven 3.6+
-*   OpenAI API Key
 
 ## Getting Started
 
