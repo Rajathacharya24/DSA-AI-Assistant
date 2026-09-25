@@ -8,6 +8,7 @@ import com.dsa.assistant.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -23,17 +24,20 @@ public class DataInitializer implements CommandLineRunner {
     private final ProblemRepository problemRepository;
     private final ProgressRepository progressRepository;
     private final AttemptRepository attemptRepository;
+        private final PasswordEncoder passwordEncoder;
 
     public DataInitializer(UserRepository userRepository,
                            TopicRepository topicRepository,
                            ProblemRepository problemRepository,
                            ProgressRepository progressRepository,
-                           AttemptRepository attemptRepository) {
+                                                   AttemptRepository attemptRepository,
+                                                   PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.topicRepository = topicRepository;
         this.problemRepository = problemRepository;
         this.progressRepository = progressRepository;
         this.attemptRepository = attemptRepository;
+                this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -114,7 +118,7 @@ public class DataInitializer implements CommandLineRunner {
         problemRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
 
         // 3. Create Demo User
-        User demoUser = new User(null, "Alex Learner", "alex@example.com", null);
+        User demoUser = new User(null, "Alex Learner", "alex@example.com", passwordEncoder.encode("Password@123"), null);
         demoUser = userRepository.save(demoUser);
 
         // 4. Create Initial Progress & Sample Attempt
