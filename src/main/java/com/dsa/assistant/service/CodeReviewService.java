@@ -32,12 +32,12 @@ public class CodeReviewService {
     }
 
     @Transactional
-    public CodeReviewResponse reviewAndSubmitCode(Long problemId, CodeSubmitRequest request) {
+        public CodeReviewResponse reviewAndSubmitCode(Long problemId, Long userId, CodeSubmitRequest request) {
         Problem problem = problemRepository.findById(problemId)
                 .orElseThrow(() -> new IllegalArgumentException("Problem not found with id: " + problemId));
         
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + request.getUserId()));
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId));
 
         // Call the AI Agent to review the code
         CodeReviewResponse reviewResponse = agentService.reviewCode(problem.getTitle(), problem.getDescription(), request.getCode());

@@ -18,16 +18,20 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
+    private String passwordHash;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     public User() {
     }
 
-    public User(Long id, String name, String email, LocalDateTime createdAt) {
+    public User(Long id, String name, String email, String passwordHash, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.passwordHash = passwordHash;
         this.createdAt = createdAt;
     }
 
@@ -60,6 +64,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -1,11 +1,14 @@
 package com.dsa.assistant.controller;
 
 import com.dsa.assistant.dto.CreateProblemDTO;
+import com.dsa.assistant.dto.CodeSubmitRequest;
 import com.dsa.assistant.dto.ProblemDTO;
+import com.dsa.assistant.security.CurrentUser;
 import com.dsa.assistant.service.ProblemService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,8 +54,9 @@ public class ProblemController {
     @PostMapping("/{problemId}/submit")
     public ResponseEntity<com.dsa.assistant.dto.CodeReviewResponse> submitCode(
             @PathVariable Long problemId,
-            @Valid @RequestBody com.dsa.assistant.dto.CodeSubmitRequest request) {
-        com.dsa.assistant.dto.CodeReviewResponse response = codeReviewService.reviewAndSubmitCode(problemId, request);
+            @AuthenticationPrincipal CurrentUser currentUser,
+            @Valid @RequestBody CodeSubmitRequest request) {
+        com.dsa.assistant.dto.CodeReviewResponse response = codeReviewService.reviewAndSubmitCode(problemId, currentUser.getId(), request);
         return ResponseEntity.ok(response);
     }
 }
