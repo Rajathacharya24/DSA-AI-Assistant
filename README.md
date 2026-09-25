@@ -21,4 +21,4 @@ Test the APIs using:
 * `test-chat.http`
 * `test-progress.http`
 
-Works with **VS Code REST Client** or **IntelliJ HTTP Client**.
+Works with **VS Code REST **
