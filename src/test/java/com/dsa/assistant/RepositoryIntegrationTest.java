@@ -37,9 +37,15 @@ class RepositoryIntegrationTest {
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
         if (userRepository.count() == 0) {
-            Topic topic = topicRepository.findByName("Arrays").orElseGet(() -> topicRepository.save(new Topic("Arrays")));
-            topicRepository.findByName("Strings").orElseGet(() -> topicRepository.save(new Topic("Strings")));
-            topicRepository.findByName("Trees").orElseGet(() -> topicRepository.save(new Topic("Trees")));
+            attemptRepository.deleteAll();
+            progressRepository.deleteAll();
+            problemRepository.deleteAll();
+            topicRepository.deleteAll();
+            userRepository.deleteAll();
+
+            Topic topic = topicRepository.save(new Topic("Arrays"));
+            topicRepository.save(new Topic("Strings"));
+            topicRepository.save(new Topic("Trees"));
             
             for (int i=0; i<5; i++) {
                 Problem p = new Problem();
