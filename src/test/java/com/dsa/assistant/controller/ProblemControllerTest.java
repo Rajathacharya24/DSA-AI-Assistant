@@ -83,9 +83,9 @@ class ProblemControllerTest {
     void testSubmitCode_Success() throws Exception {
         CodeSubmitRequest request = new CodeSubmitRequest();
         request.setCode("def func(): pass");
-        request.setLanguage("python");
+        request.setCode("def func(): pass");
 
-        CodeReviewResponse response = new CodeReviewResponse("Good", true);
+        CodeReviewResponse response = new CodeReviewResponse(true, "Good", "O(N)", "O(1)", "Nice");
         when(codeReviewService.reviewAndSubmitCode(eq(1L), any(), any())).thenReturn(response);
 
         mockMvc.perform(post("/api/problems/1/submit")
@@ -99,7 +99,7 @@ class ProblemControllerTest {
     void testSubmitCode_Unauthorized() throws Exception {
         CodeSubmitRequest request = new CodeSubmitRequest();
         request.setCode("def func(): pass");
-        request.setLanguage("python");
+        request.setCode("def func(): pass");
 
         mockMvc.perform(post("/api/problems/1/submit")
                         .contentType(MediaType.APPLICATION_JSON)

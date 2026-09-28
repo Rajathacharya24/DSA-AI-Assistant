@@ -71,7 +71,7 @@ class AuthServiceTest {
         when(passwordEncoder.encode(anyString())).thenReturn("hashed_password");
         when(userRepository.save(any(User.class))).thenReturn(user);
         when(jwtService.generateToken(any(CurrentUser.class))).thenReturn("fake_token");
-        when(jwtService.getExpiryTime()).thenReturn(3600L);
+        when(jwtService.getExpiryTime()).thenReturn(java.time.LocalDateTime.now().plusHours(1));
 
         AuthResponse response = authService.register(registerRequest);
 
@@ -104,7 +104,7 @@ class AuthServiceTest {
         when(auth.getPrincipal()).thenReturn(currentUser);
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
         when(jwtService.generateToken(any(CurrentUser.class))).thenReturn("fake_token");
-        when(jwtService.getExpiryTime()).thenReturn(3600L);
+        when(jwtService.getExpiryTime()).thenReturn(java.time.LocalDateTime.now().plusHours(1));
 
         AuthResponse response = authService.login(loginRequest);
 

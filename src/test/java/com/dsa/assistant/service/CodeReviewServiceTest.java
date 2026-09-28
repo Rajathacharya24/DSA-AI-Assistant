@@ -54,9 +54,9 @@ class CodeReviewServiceTest {
 
         CodeSubmitRequest request = new CodeSubmitRequest();
         request.setCode("def twoSum(): return [0, 1]");
-        request.setLanguage("python");
+        request.setCode("def twoSum(): return [0, 1]");
 
-        CodeReviewResponse aiResponse = new CodeReviewResponse("Looks good", true);
+        CodeReviewResponse aiResponse = new CodeReviewResponse(true, "Looks good", "O(N)", "O(N)", "Good");
 
         when(problemRepository.findById(1L)).thenReturn(Optional.of(problem));
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));

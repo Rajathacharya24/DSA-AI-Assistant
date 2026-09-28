@@ -41,7 +41,7 @@ class AuthControllerTest {
         request.setEmail("test@test.com");
         request.setPassword("password");
 
-        AuthResponse response = new AuthResponse("token", "Bearer", 1L, "Test", "test@test.com", 3600L);
+        AuthResponse response = new AuthResponse("token", "Bearer", 1L, "Test", "test@test.com", java.time.LocalDateTime.now().plusHours(1));
         when(authService.register(any(RegisterRequest.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/auth/register")
@@ -68,7 +68,7 @@ class AuthControllerTest {
         request.setEmail("test@test.com");
         request.setPassword("password");
 
-        AuthResponse response = new AuthResponse("token", "Bearer", 1L, "Test", "test@test.com", 3600L);
+        AuthResponse response = new AuthResponse("token", "Bearer", 1L, "Test", "test@test.com", java.time.LocalDateTime.now().plusHours(1));
         when(authService.login(any(LoginRequest.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/auth/login")
