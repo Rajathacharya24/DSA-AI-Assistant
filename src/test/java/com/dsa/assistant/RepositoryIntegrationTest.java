@@ -36,16 +36,22 @@ class RepositoryIntegrationTest {
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
-        if (userRepository.count() == 0) {
-            attemptRepository.deleteAll();
-            progressRepository.deleteAll();
-            problemRepository.deleteAll();
-            topicRepository.deleteAll();
-            userRepository.deleteAll();
+        attemptRepository.deleteAll();
+        progressRepository.deleteAll();
+        problemRepository.deleteAll();
+        topicRepository.deleteAll();
+        userRepository.deleteAll();
+        
+        attemptRepository.flush();
+        progressRepository.flush();
+        problemRepository.flush();
+        topicRepository.flush();
+        userRepository.flush();
 
-            Topic topic = topicRepository.save(new Topic("Arrays"));
-            topicRepository.save(new Topic("Strings"));
-            topicRepository.save(new Topic("Trees"));
+        Topic topic = topicRepository.save(new Topic("Arrays"));
+        topicRepository.save(new Topic("Strings"));
+        topicRepository.save(new Topic("Trees"));
+        topicRepository.flush();
             
             for (int i=0; i<5; i++) {
                 Problem p = new Problem();
@@ -74,7 +80,6 @@ class RepositoryIntegrationTest {
             att.setSubmittedCode("def foo(): pass");
             att.setResult(com.dsa.assistant.model.enums.AttemptResult.ACCEPTED);
             attemptRepository.save(att);
-        }
     }
 
     @Test
