@@ -65,6 +65,7 @@ class RepositoryIntegrationTest {
             Attempt att = new Attempt();
             att.setUser(u);
             att.setProblem(prog.getProblem());
+            att.setSubmittedCode("def foo(): pass");
             att.setResult(com.dsa.assistant.model.enums.AttemptResult.ACCEPTED);
             attemptRepository.save(att);
         }
