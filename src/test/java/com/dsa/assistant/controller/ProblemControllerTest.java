@@ -83,11 +83,11 @@ class ProblemControllerTest {
     void testSubmitCode_Success() throws Exception {
         CodeSubmitRequest request = new CodeSubmitRequest();
         request.setCode("def func(): pass");
-        request.setCode("def func(): pass");
 
         CodeReviewResponse response = new CodeReviewResponse(true, "Good", "O(N)", "O(1)", "Nice");
         when(codeReviewService.reviewAndSubmitCode(eq(1L), any(), any())).thenReturn(response);
 
+        // We use any() instead of eq(1L) because @WithMockUser might not have the correct ID
         mockMvc.perform(post("/api/problems/1/submit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))

@@ -14,7 +14,11 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+
 @Component
+@Profile("!test")
 public class DataInitializer implements CommandLineRunner {
 
     private static final Logger log = LoggerFactory.getLogger(DataInitializer.class);
