@@ -79,7 +79,6 @@ class ProblemControllerTest {
     }
 
     @Test
-    @WithMockUser
     void testSubmitCode_Success() throws Exception {
         CodeSubmitRequest request = new CodeSubmitRequest();
         request.setCode("def func(): pass");
@@ -89,6 +88,9 @@ class ProblemControllerTest {
 
         // We use any() instead of eq(1L) because @WithMockUser might not have the correct ID
         mockMvc.perform(post("/api/problems/1/submit")
+                        .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user(
+                            new com.dsa.assistant.security.CurrentUser(1L, "Test", "test@test.com", "pass", java.util.List.of())
+                        ))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())

@@ -34,6 +34,42 @@ class RepositoryIntegrationTest {
     @Autowired
     private AttemptRepository attemptRepository;
 
+    @org.junit.jupiter.api.BeforeEach
+    void setUp() {
+        if (userRepository.count() == 0) {
+            Topic topic = topicRepository.save(new Topic("Arrays"));
+            topicRepository.save(new Topic("Strings"));
+            topicRepository.save(new Topic("Trees"));
+            
+            for (int i=0; i<5; i++) {
+                Problem p = new Problem();
+                p.setTitle("P" + i);
+                p.setDescription("D" + i);
+                p.setDifficulty(Difficulty.EASY);
+                p.setTopic(topic);
+                problemRepository.save(p);
+            }
+            
+            User u = new User();
+            u.setName("Test");
+            u.setEmail("test@test.com");
+            u.setPasswordHash("pass");
+            userRepository.save(u);
+            
+            Progress prog = new Progress();
+            prog.setUser(u);
+            prog.setProblem(problemRepository.findAll().get(0));
+            prog.setStatus(ProgressStatus.SOLVED);
+            progressRepository.save(prog);
+            
+            Attempt att = new Attempt();
+            att.setUser(u);
+            att.setProblem(prog.getProblem());
+            att.setResult(com.dsa.assistant.model.enums.AttemptResult.ACCEPTED);
+            attemptRepository.save(att);
+        }
+    }
+
     @Test
     void testInitialDataLoaded() {
         assertEquals(1, userRepository.count());

@@ -37,19 +37,14 @@ class ProgressControllerTest {
     // For simplicity, let's assume the user ID matches the path variable.
 
     @Test
-    @WithMockUser(username = "test@test.com", roles = "USER")
     void testGetUserProgress_Success() throws Exception {
-        // Mocking the user progress to bypass the ensureOwnAccount check might require more setup 
-        // with the custom CurrentUser if it casts it. Let's see if we can mock it directly.
-        // Actually, @WithMockUser might not provide CurrentUser, but a generic UserDetails.
-        // We might get ClassCastException in ensureOwnAccount, let's see how the test runs.
+        // Need to provide custom user
         
-        // Since ensureOwnAccount is custom, we can mock it by using a custom SecurityContext or modifying test.
-        // I will write a simple test for unauthorized.
-        
-        mockMvc.perform(get("/api/users/1/progress"))
-                .andExpect(status().isUnauthorized()); // Without our custom token it will fail in JwtFilter, wait WithMockUser works on filter level.
-        // It will hit ClassCastException or return 403 Forbidden.
+        mockMvc.perform(get("/api/users/1/progress")
+                .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user(
+                    new com.dsa.assistant.security.CurrentUser(1L, "Test", "test@test.com", "pass", java.util.List.of())
+                )))
+                .andExpect(status().isOk());
     }
 
     @Test
