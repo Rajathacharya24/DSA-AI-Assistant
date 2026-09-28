@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA AI Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">DSA AI Assistant</div>
+        <div class="nav-links" id="nav-links">
+            <a href="#" data-target="login-view" class="nav-link public-only">Login</a>
+            <a href="#" data-target="register-view" class="nav-link public-only">Register</a>
+            <a href="#" data-target="dashboard-view" class="nav-link auth-only">Dashboard</a>
+            <a href="#" data-target="chat-view" class="nav-link auth-only">AI Chat</a>
+            <a href="#" data-target="problems-view" class="nav-link auth-only">Problems</a>
+            <a href="#" data-target="progress-view" class="nav-link auth-only">Progress</a>
+            <a href="#" id="logout-btn" class="nav-link auth-only">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Error/Success Messages -->
+        <div id="toast" class="toast hidden"></div>
+
+        <!-- Login View -->
+        <section id="login-view" class="view active">
+            <div class="card form-card">
+                <h2>Welcome Back</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-username">Username</label>
+                        <input type="text" id="login-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Register View -->
+        <section id="register-view" class="view">
+            <div class="card form-card">
+                <h2>Create Account</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-username">Username</label>
+                        <input type="text" id="register-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Dashboard View (Phase 12) -->
+        <section id="dashboard-view" class="view">
+            <div class="dashboard-header">
+                <h2>Dashboard</h2>
+                <button class="btn btn-primary" data-target="problems-view" onclick="switchView('problems-view')">Continue Learning</button>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Solved</h3>
+                    <div class="stat-value" id="dash-total-solved">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Attempted</h3>
+                    <div class="stat-value" id="dash-attempted">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Current Streak</h3>
+                    <div class="stat-value" id="dash-streak">0 <span class="streak-icon">🔥</span></div>
+                </div>
+                <div class="stat-card">
+                    <h3>Hints Used</h3>
+                    <div class="stat-value" id="dash-hints">0</div>
+                </div>
+            </div>
+
+            <div class="dashboard-split">
+                <div class="card difficulty-breakdown">
+                    <h3>Difficulty Breakdown</h3>
+                    <div class="difficulty-stats">
+                        <div class="diff-stat easy">
+                            <span class="label">Easy</span>
+                            <span class="value" id="dash-easy">0</span>
+                        </div>
+                        <div class="diff-stat medium">
+                            <span class="label">Medium</span>
+                            <span class="value" id="dash-medium">0</span>
+                        </div>
+                        <div class="diff-stat hard">
+                            <span class="label">Hard</span>
+                            <span class="value" id="dash-hard">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card recommendations">
+                    <h3>Recommended for You</h3>
+                    <div class="recommendation-content" id="dash-recommendation">
+                        <p class="loading-text">Loading recommendations...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card recent-problems mt-20">
+                <h3>Recent Problems</h3>
+                <div id="dash-recent-problems">
+                    <p class="text-muted">No recent problems found. Start practicing!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Chat View -->
+        <section id="chat-view" class="view">
+            <div class="chat-container card">
+                <div class="chat-header">
+                    <h2>AI Assistant</h2>
+                    <p>Ask anything about data structures and algorithms</p>
+                </div>
+                <div class="chat-history" id="chat-history">
+                    <div class="message ai-message">
+                        <div class="message-content">Hello! How can I help you with DSA today?</div>
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <form id="chat-form">
+                        <input type="text" id="chat-input" placeholder="Ask a question..." required>
+                        <button type="submit" class="btn btn-primary" id="chat-send">Send</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Problems View -->
+        <section id="problems-view" class="view">
+            <h2>Problems</h2>
+            <div class="filters">
+                <select id="problem-difficulty-filter">
+                    <option value="">All Difficulties</option>
+                    <option value="EASY">Easy</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="HARD">Hard</option>
+                </select>
+                <select id="problem-topic-filter">
+                    <option value="">All Topics</option>
+                    <option value="Arrays">Arrays</option>
+                    <option value="Strings">Strings</option>
+                    <option value="Trees">Trees</option>
+                    <option value="Dynamic Programming">Dynamic Programming</option>
+                </select>
+            </div>
+            <div class="problems-grid" id="problems-list">
+                <!-- Problems will be populated here -->
+                <p class="loading-text">Loading problems...</p>
+            </div>
+        </section>
+
+        <!-- Progress View -->
+        <section id="progress-view" class="view">
+            <h2>Your Progress</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Problems Solved</h3>
+                    <div class="stat-value" id="prog-solved">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Topics Studied</h3>
+                    <div class="stat-value" id="prog-topics">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Current Streak</h3>
+                    <div class="stat-value" id="prog-streak">0</div>
+                </div>
+            </div>
+            
+            <div class="card mt-20">
+                <h3>Activity</h3>
+                <p>Last active: <span id="prog-last-active">Never</span></p>
+            </div>
+        </section>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
