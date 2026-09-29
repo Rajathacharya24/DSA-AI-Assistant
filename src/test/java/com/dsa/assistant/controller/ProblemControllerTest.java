@@ -101,11 +101,67 @@ class ProblemControllerTest {
     void testSubmitCode_Unauthorized() throws Exception {
         CodeSubmitRequest request = new CodeSubmitRequest();
         request.setCode("def func(): pass");
-        request.setCode("def func(): pass");
 
         mockMvc.perform(post("/api/problems/1/submit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void testGetProblemsByTopic() throws Exception {
+        ProblemDTO dto = new ProblemDTO();
+        dto.setId(1L);
+        dto.setTitle("Two Sum");
+        when(problemService.getProblemsByTopic("arrays")).thenReturn(List.of(dto));
+
+        mockMvc.perform(get("/api/problems/topic/arrays"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title").value("Two Sum"));
+    }
+
+    @Test
+    void testGetProblemsByDifficulty() throws Exception {
+        ProblemDTO dto = new ProblemDTO();
+        dto.setId(1L);
+        dto.setTitle("Two Sum");
+        when(problemService.getProblemsByDifficulty("EASY")).thenReturn(List.of(dto));
+
+        mockMvc.perform(get("/api/problems/difficulty/EASY"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title").value("Two Sum"));
+    }
+
+    @Test
+    @WithMockUser
+    void testCreateProblem() throws Exception {
+        com.dsa.assistant.dto.CreateProblemDTO request = new com.dsa.assistant.dto.CreateProblemDTO();
+        request.setTitle("New Problem");
+        request.setTopic("arrays");
+        request.setDifficulty(Difficulty.MEDIUM);
+        
+        ProblemDTO dto = new ProblemDTO();
+        dto.setId(2L);
+        dto.setTitle("New Problem");
+
+        when(problemService.createProblem(any(com.dsa.assistant.dto.CreateProblemDTO.class))).thenReturn(dto);
+
+        mockMvc.perform(post("/api/problems")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.title").value("New Problem"));
+    }
+
+    @Test
+    @WithMockUser
+    void testCreateProblem_ValidationFailure() throws Exception {
+        com.dsa.assistant.dto.CreateProblemDTO request = new com.dsa.assistant.dto.CreateProblemDTO();
+        // Title missing, which violates @Valid
+
+        mockMvc.perform(post("/api/problems")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
     }
 }
