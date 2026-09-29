@@ -137,6 +137,7 @@ class ProblemControllerTest {
     void testCreateProblem() throws Exception {
         com.dsa.assistant.dto.CreateProblemDTO request = new com.dsa.assistant.dto.CreateProblemDTO();
         request.setTitle("New Problem");
+        request.setDescription("New Description");
         request.setTopic("arrays");
         request.setDifficulty(Difficulty.MEDIUM);
         
