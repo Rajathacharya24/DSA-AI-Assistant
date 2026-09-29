@@ -39,8 +39,7 @@ class ProgressControllerTest {
     @Test
     void testGetUserProgress_Success() throws Exception {
         UserProgressDTO dto = new UserProgressDTO();
-        dto.setUserId(1L);
-        dto.setTotalSolved(5);
+        dto.setProblemsSolved(5L);
         when(progressService.getUserProgress(1L)).thenReturn(dto);
 
         mockMvc.perform(get("/api/users/1/progress")
@@ -48,7 +47,7 @@ class ProgressControllerTest {
                     new com.dsa.assistant.security.CurrentUser(1L, "Test", "test@test.com", "pass", java.util.List.of())
                 )))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalSolved").value(5));
+                .andExpect(jsonPath("$.problemsSolved").value(5));
     }
 
     @Test
