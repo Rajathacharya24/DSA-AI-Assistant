@@ -38,19 +38,38 @@ class ProgressControllerTest {
 
     @Test
     void testGetUserProgress_Success() throws Exception {
-        // Need to provide custom user
-        
+        UserProgressDTO dto = new UserProgressDTO();
+        dto.setUserId(1L);
+        dto.setTotalSolved(5);
+        when(progressService.getUserProgress(1L)).thenReturn(dto);
+
         mockMvc.perform(get("/api/users/1/progress")
                 .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user(
                     new com.dsa.assistant.security.CurrentUser(1L, "Test", "test@test.com", "pass", java.util.List.of())
                 )))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalSolved").value(5));
     }
 
     @Test
     void testGetUserProgress_Unauthorized() throws Exception {
         mockMvc.perform(get("/api/users/1/progress"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void testGetRecommendations_Success() throws Exception {
+        RecommendationResponse dto = new RecommendationResponse();
+        dto.setRecommendedTopic("arrays");
+        dto.setReasoning("You need practice.");
+        when(recommendationService.getRecommendation(1L)).thenReturn(dto);
+
+        mockMvc.perform(get("/api/users/1/recommendations")
+                .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user(
+                    new com.dsa.assistant.security.CurrentUser(1L, "Test", "test@test.com", "pass", java.util.List.of())
+                )))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.recommendedTopic").value("arrays"));
     }
 
     @Test
