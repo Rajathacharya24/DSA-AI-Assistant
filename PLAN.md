@@ -88,22 +88,17 @@ This checkpoint is critical. It teaches students to judge their own solution bef
 
 After submission, AI should respond with:
 
-- whether the logic is strong or weak
-- what works well
-- which hidden bug or edge case exists
-- what should be improved
-- a better alternative approach if needed
-- a score for approach quality
 
 ### Phase 5: Improvement Loop
-
-The student should then:
-
-- revise the logic
-- handle missing edge cases
-- improve time complexity
 - simplify the solution
 - resubmit or re-evaluate
+### Phase 5: Improvement Loop
+The student should then:
+ revise the logic
+ handle missing edge cases
+ improve time complexity
+ simplify the solution
+ resubmit or re-evaluate
 
 This creates a proper improvement cycle.
 
