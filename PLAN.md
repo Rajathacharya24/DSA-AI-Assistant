@@ -72,7 +72,7 @@ The system should encourage thinking before coding.
 
 ### Phase 3: Validation Before Submission
 
-Before final submit, the app should ask the student to verify:
+Before final submission, the app should ask the student to verify:
 
 - Best-case scenario
 - Worst-case scenario
@@ -82,17 +82,17 @@ Before final submit, the app should ask the student to verify:
 - Correctness of the logic
 - Whether the chosen data structure is appropriate
 
-This step is critical. It teaches students to judge their own solution before asking the AI.
+This checkpoint is critical. It teaches students to judge their own solution before asking the AI for feedback.
 
 ### Phase 4: AI Mentor Review
 
 After submission, AI should respond with:
 
-- whether the logic is good or weak
+- whether the logic is strong or weak
 - what works well
 - which hidden bug or edge case exists
 - what should be improved
-- better alternative approach if needed
+- a better alternative approach if needed
 - a score for approach quality
 
 ### Phase 5: Improvement Loop
