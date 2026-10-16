@@ -93,12 +93,15 @@ After submission, AI should respond with:
 - simplify the solution
 - resubmit or re-evaluate
 ### Phase 5: Improvement Loop
+### Phase 5: Improvement Loop
+
 The student should then:
- revise the logic
- handle missing edge cases
- improve time complexity
- simplify the solution
- resubmit or re-evaluate
+
+- revise the logic
+- handle missing edge cases
+- improve time complexity
+- simplify the solution
+- resubmit or re-evaluate
 
 This creates a proper improvement cycle.
 
