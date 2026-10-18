@@ -416,6 +416,7 @@ async function loadProgress() {
 // Add event listeners for filters
 document.getElementById('problem-difficulty-filter').addEventListener('change', loadProblems);
 document.getElementById('problem-topic-filter').addEventListener('change', loadProblems);
+document.getElementById('problem-search-input').addEventListener('input', loadProblems);
 
 // Start
 document.addEventListener('DOMContentLoaded', init);
