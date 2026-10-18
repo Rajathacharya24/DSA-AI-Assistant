@@ -252,6 +252,100 @@ body {
     margin-bottom: 1rem;
 }
 
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.study-plan-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.plan-form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.study-plan-form select,
+.study-plan-form input,
+.filters input {
+    width: 100%;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.375rem;
+    font: inherit;
+}
+
+.plan-btn {
+    width: fit-content;
+    min-width: 160px;
+}
+
+.plan-summary {
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.plan-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.plan-badge {
+    display: inline-block;
+    background: #e0e7ff;
+    color: var(--primary);
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+.plan-goal {
+    margin-top: 0.5rem;
+    font-weight: 600;
+}
+
+.plan-progress {
+    background: #dcfce7;
+    color: #166534;
+    border-radius: 999px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.plan-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+}
+
+.plan-steps {
+    margin-left: 1.25rem;
+    color: var(--text-main);
+}
+
+.plan-steps li + li {
+    margin-top: 0.5rem;
+}
+
 .mt-20 { margin-top: 1.5rem; }
 .text-muted { color: var(--text-muted); }
 

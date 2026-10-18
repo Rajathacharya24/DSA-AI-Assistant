@@ -16,6 +16,7 @@ const toast = document.getElementById('toast');
 const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
 const chatForm = document.getElementById('chat-form');
+const studyPlanForm = document.getElementById('study-plan-form');
 
 // Initialization
 function init() {
@@ -216,6 +217,32 @@ function setupForms() {
             addChatMessage('Sorry, I encountered an error. Please try again.', 'ai');
         }
     });
+
+    if (studyPlanForm) {
+        studyPlanForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const topic = document.getElementById('plan-topic').value;
+            const difficulty = document.getElementById('plan-difficulty').value;
+            const goal = document.getElementById('plan-goal').value.trim();
+            const btn = e.target.querySelector('button');
+
+            try {
+                btn.disabled = true;
+                btn.textContent = 'Generating...';
+                const plan = await apiCall('/plans', {
+                    method: 'POST',
+                    body: JSON.stringify({ topic, difficulty, goal })
+                });
+                renderStudyPlan(plan);
+                showToast('Study plan generated', 'success');
+            } catch (err) {
+                // handled by apiCall
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Generate Plan';
+            }
+        });
+    }
 }
 
 function addChatMessage(text, sender) {
@@ -245,6 +272,8 @@ async function loadDashboard() {
         document.getElementById('dash-easy').textContent = progress.easySolved || 0;
         document.getElementById('dash-medium').textContent = progress.mediumSolved || 0;
         document.getElementById('dash-hard').textContent = progress.hardSolved || 0;
+
+        await loadStudyPlan();
 
         // Load Recommendations
         try {
@@ -276,31 +305,78 @@ async function loadDashboard() {
     }
 }
 
+async function loadStudyPlan() {
+    if (!userId) return;
+    const planSummary = document.getElementById('plan-summary');
+    if (!planSummary) return;
+
+    try {
+        const plan = await apiCall(`/plans/${userId}`);
+        renderStudyPlan(plan);
+    } catch (err) {
+        planSummary.innerHTML = '<p class="text-muted">No study plan yet. Generate one to map out your next steps.</p>';
+    }
+}
+
+function renderStudyPlan(plan) {
+    const planSummary = document.getElementById('plan-summary');
+    if (!planSummary || !plan) return;
+
+    const studySteps = (plan.studySteps || []).map(step => `<li>${step}</li>`).join('');
+    planSummary.innerHTML = `
+        <div class="plan-header">
+            <div>
+                <span class="plan-badge">${plan.topic || 'General'}</span>
+                <p class="plan-goal">${plan.goal || 'Build consistency and mastery.'}</p>
+            </div>
+            <span class="plan-progress">${plan.progressPercentage ?? 0}%</span>
+        </div>
+        <div class="plan-meta">
+            <span>${plan.difficulty || 'MEDIUM'}</span>
+            <span>${plan.expectedTime || '1-2 hours per week'}</span>
+            <span>${plan.weeklyTarget || '3 easy, 2 medium, 1 hard practice problems'}</span>
+        </div>
+        <ul class="plan-steps">${studySteps || '<li>Start with one focused concept and solve 2 practice problems.</li>'}</ul>
+    `;
+}
+
 async function loadProblems() {
     try {
         const diffFilter = document.getElementById('problem-difficulty-filter').value;
         const topicFilter = document.getElementById('problem-topic-filter').value;
-        
-        let url = '/problems';
-        if (topicFilter) {
-            url = `/problems/topic/${topicFilter}`;
-            // Client side filtering for difficulty since backend might not support combo filters
+        const searchInput = document.getElementById('problem-search-input');
+        const searchTerm = searchInput ? searchInput.value.trim() : '';
+
+        let problems = [];
+        if (searchTerm) {
+            problems = await apiCall(`/problems/search?query=${encodeURIComponent(searchTerm)}`);
+        } else if (topicFilter) {
+            problems = await apiCall(`/problems/topic/${encodeURIComponent(topicFilter)}`);
         } else if (diffFilter) {
-            url = `/problems/difficulty/${diffFilter}`;
+            problems = await apiCall(`/problems/difficulty/${encodeURIComponent(diffFilter)}`);
+        } else {
+            problems = await apiCall('/problems');
         }
 
-        const problems = await apiCall(url);
+        let filteredProblems = problems;
+        if (topicFilter) {
+            filteredProblems = filteredProblems.filter(problem => problem.topic === topicFilter);
+        }
+        if (diffFilter) {
+            filteredProblems = filteredProblems.filter(problem => problem.difficulty === diffFilter);
+        }
+        if (searchTerm) {
+            const normalized = searchTerm.toLowerCase();
+            filteredProblems = filteredProblems.filter(problem => {
+                const label = `${problem.title || ''} ${problem.topic || ''} ${problem.description || ''}`.toLowerCase();
+                return label.includes(normalized);
+            });
+        }
+
         const container = document.getElementById('problems-list');
-        
-        if (problems.length === 0) {
+        if (filteredProblems.length === 0) {
             container.innerHTML = '<p class="text-muted">No problems found.</p>';
             return;
-        }
-
-        // Apply secondary client side filter if needed
-        let filteredProblems = problems;
-        if (topicFilter && diffFilter) {
-            filteredProblems = problems.filter(p => p.difficulty === diffFilter);
         }
 
         container.innerHTML = filteredProblems.map(p => `

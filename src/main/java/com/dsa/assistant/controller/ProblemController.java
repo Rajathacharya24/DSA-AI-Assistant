@@ -45,6 +45,11 @@ public class ProblemController {
         return ResponseEntity.ok(problemService.getProblemsByDifficulty(difficulty));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<ProblemDTO>> searchProblems(@RequestParam String query) {
+        return ResponseEntity.ok(problemService.searchProblems(query));
+    }
+
     @PostMapping
     public ResponseEntity<ProblemDTO> createProblem(@Valid @RequestBody CreateProblemDTO createProblemDTO) {
         ProblemDTO createdProblem = problemService.createProblem(createProblemDTO);

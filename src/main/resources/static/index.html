@@ -117,6 +117,34 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card study-plan-card mt-20">
+                <div class="section-header">
+                    <h3>Study Plan</h3>
+                    <span class="text-muted">Build a weekly learning roadmap</span>
+                </div>
+                <form id="study-plan-form" class="study-plan-form">
+                    <div class="plan-form-row">
+                        <select id="plan-topic" required>
+                            <option value="Arrays">Arrays</option>
+                            <option value="Strings">Strings</option>
+                            <option value="Trees">Trees</option>
+                            <option value="Dynamic Programming">Dynamic Programming</option>
+                            <option value="Graphs">Graphs</option>
+                        </select>
+                        <select id="plan-difficulty" required>
+                            <option value="EASY">Easy</option>
+                            <option value="MEDIUM" selected>Medium</option>
+                            <option value="HARD">Hard</option>
+                        </select>
+                    </div>
+                    <input type="text" id="plan-goal" placeholder="Custom goal (optional)" maxlength="120">
+                    <button type="submit" class="btn btn-primary plan-btn">Generate Plan</button>
+                </form>
+                <div id="plan-summary" class="plan-summary">
+                    <p class="text-muted">No study plan yet. Generate one to map out your next steps.</p>
+                </div>
+            </div>
             
             <div class="card recent-problems mt-20">
                 <h3>Recent Problems</h3>

@@ -58,6 +58,27 @@ public class ProblemService {
         }
     }
 
+    public List<ProblemDTO> searchProblems(String query) {
+        if (query == null || query.isBlank()) {
+            return getAllProblems();
+        }
+
+        String normalized = query.trim().toLowerCase();
+        return problemRepository.findAll().stream()
+                .filter(problem -> matchesQuery(problem, normalized))
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private boolean matchesQuery(Problem problem, String query) {
+        String title = problem.getTitle() == null ? "" : problem.getTitle().toLowerCase();
+        String description = problem.getDescription() == null ? "" : problem.getDescription().toLowerCase();
+        String topicName = problem.getTopic() == null || problem.getTopic().getName() == null
+                ? ""
+                : problem.getTopic().getName().toLowerCase();
+        return title.contains(query) || description.contains(query) || topicName.contains(query);
+    }
+
     public ProblemDTO getProblem(String topic, String difficultyStr) {
         List<Problem> problems;
         Difficulty difficulty = null;
