@@ -117,6 +117,16 @@ class ProblemServiceTest {
     }
 
     @Test
+    void testSearchProblemsByKeyword() {
+        when(problemRepository.findAll()).thenReturn(List.of(problem));
+
+        List<ProblemDTO> result = problemService.searchProblems("sum");
+
+        assertEquals(1, result.size());
+        assertEquals("Two Sum", result.get(0).getTitle());
+    }
+
+    @Test
     void testCreateProblem() {
         CreateProblemDTO createDTO = new CreateProblemDTO();
         createDTO.setTitle("Two Sum");
