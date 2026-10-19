@@ -19,7 +19,7 @@ The system aims to:
 
 The product behaves like a virtual coding mentor:
 
-- a user logs in
+- a user logins
 - chooses a problem or asks for help
 - the AI understands the context
 - it may call backend tools such as get problem, get hint, get progress, or get recommendation
