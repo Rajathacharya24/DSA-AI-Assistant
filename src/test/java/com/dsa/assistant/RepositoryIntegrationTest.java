@@ -1,9 +1,11 @@
 package com.dsa.assistant;
 
+import com.dsa.assistant.dto.ProblemDTO;
 import com.dsa.assistant.model.*;
 import com.dsa.assistant.model.enums.Difficulty;
 import com.dsa.assistant.model.enums.ProgressStatus;
 import com.dsa.assistant.repository.*;
+import com.dsa.assistant.service.ProblemService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,6 +35,9 @@ class RepositoryIntegrationTest {
 
     @Autowired
     private AttemptRepository attemptRepository;
+
+    @Autowired
+    private ProblemService problemService;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
@@ -106,5 +111,21 @@ class RepositoryIntegrationTest {
 
         List<Attempt> attempts = attemptRepository.findByUserIdAndProblemId(user.getId(), progress.getProblem().getId());
         assertFalse(attempts.isEmpty());
+    }
+
+    @Test
+    void testDailyChallengeReturnsUnsolvedProblemForUser() {
+        User user = userRepository.findAll().get(0);
+        Problem extraProblem = new Problem();
+        extraProblem.setTitle("Daily Challenge");
+        extraProblem.setDescription("Unsovled challenge");
+        extraProblem.setDifficulty(Difficulty.MEDIUM);
+        extraProblem.setTopic(topicRepository.findAll().get(0));
+        problemRepository.save(extraProblem);
+
+        ProblemDTO challenge = problemService.getDailyChallenge(user.getId());
+
+        assertNotNull(challenge);
+        assertNotEquals(problemRepository.findAll().get(0).getId(), challenge.getId());
     }
 }
