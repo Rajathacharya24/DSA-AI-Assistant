@@ -9,6 +9,8 @@ import com.dsa.assistant.repository.AttemptRepository;
 import com.dsa.assistant.repository.ProblemRepository;
 import com.dsa.assistant.repository.ProgressRepository;
 import com.dsa.assistant.repository.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -33,6 +35,7 @@ public class ProgressService {
         this.attemptRepository = attemptRepository;
     }
 
+    @Cacheable(value = "user-progress", key = "#userId")
     public UserProgressDTO getUserProgress(Long userId) {
         // Validate user exists
         userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
@@ -99,6 +102,7 @@ public class ProgressService {
         return progressRepository.findByUserId(userId);
     }
 
+    @CacheEvict(value = "user-progress", key = "#userId")
     public void incrementHintsUsed(Long userId, Long problemId) {
         Optional<Progress> optionalProgress = progressRepository.findByUserIdAndProblemId(userId, problemId);
 
@@ -120,6 +124,7 @@ public class ProgressService {
         progressRepository.save(progress);
     }
 
+    @CacheEvict(value = "user-progress", key = "#userId")
     public void updateProgressStatus(Long userId, Long problemId, boolean isCorrect) {
         Optional<Progress> optionalProgress = progressRepository.findByUserIdAndProblemId(userId, problemId);
 

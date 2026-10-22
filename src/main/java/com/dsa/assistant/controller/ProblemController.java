@@ -8,6 +8,7 @@ import com.dsa.assistant.service.ProblemService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +44,14 @@ public class ProblemController {
     @GetMapping("/difficulty/{difficulty}")
     public ResponseEntity<List<ProblemDTO>> getProblemsByDifficulty(@PathVariable String difficulty) {
         return ResponseEntity.ok(problemService.getProblemsByDifficulty(difficulty));
+    }
+
+    @GetMapping("/daily")
+    public ResponseEntity<ProblemDTO> getDailyChallenge(@AuthenticationPrincipal CurrentUser currentUser) {
+        if (currentUser == null) {
+            throw new AccessDeniedException("Authentication required.");
+        }
+        return ResponseEntity.ok(problemService.getDailyChallenge(currentUser.getId()));
     }
 
     @GetMapping("/search")

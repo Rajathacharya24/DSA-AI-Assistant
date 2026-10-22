@@ -274,6 +274,7 @@ async function loadDashboard() {
         document.getElementById('dash-hard').textContent = progress.hardSolved || 0;
 
         await loadStudyPlan();
+        await loadDailyChallenge();
 
         // Load Recommendations
         try {
@@ -282,13 +283,13 @@ async function loadDashboard() {
             if (recs && recs.recommendedTopic) {
                 recContainer.innerHTML = `
                     <div class="rec-topic">${recs.recommendedTopic}</div>
-                    ${recs.recommendedProblem ? `
+                    ${recs.nextProblemTitle ? `
                         <div class="problem-card">
                             <div class="problem-header">
-                                <span class="problem-title">${recs.recommendedProblem.title}</span>
-                                <span class="badge ${recs.recommendedProblem.difficulty.toLowerCase()}">${recs.recommendedProblem.difficulty}</span>
+                                <span class="problem-title">${recs.nextProblemTitle}</span>
+                                <span class="badge ${String(recs.recommendedDifficulty || 'easy').toLowerCase()}">${recs.recommendedDifficulty || 'Easy'}</span>
                             </div>
-                            <p class="text-muted" style="font-size: 0.875rem; margin-bottom: 1rem;">${recs.recommendedProblem.description.substring(0, 100)}...</p>
+                            <p class="text-muted" style="font-size: 0.875rem; margin-bottom: 1rem;">${recs.reasoning || 'Start with this next topic to keep momentum.'}</p>
                             <button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;" onclick="switchView('problems-view')">Solve Now</button>
                         </div>
                     ` : '<p>Keep up the good work! No specific problem recommended right now.</p>'}
@@ -315,6 +316,29 @@ async function loadStudyPlan() {
         renderStudyPlan(plan);
     } catch (err) {
         planSummary.innerHTML = '<p class="text-muted">No study plan yet. Generate one to map out your next steps.</p>';
+    }
+}
+
+async function loadDailyChallenge() {
+    if (!userId) return;
+    const container = document.getElementById('dash-recent-problems');
+    if (!container) return;
+
+    try {
+        const challenge = await apiCall('/problems/daily');
+        container.innerHTML = `
+            <div class="problem-card highlight-card">
+                <div class="problem-header">
+                    <div class="problem-title">Daily Challenge</div>
+                    <div class="badge ${challenge.difficulty ? challenge.difficulty.toLowerCase() : 'easy'}">${challenge.difficulty || 'Easy'}</div>
+                </div>
+                <div class="problem-topic">${challenge.topic || 'General'}</div>
+                <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1rem;">${challenge.title}</p>
+                <button class="btn btn-primary" onclick="document.getElementById('problem-search-input').value='${challenge.title}'; loadProblems(); switchView('problems-view');">Solve Today</button>
+            </div>
+        `;
+    } catch (err) {
+        container.innerHTML = '<p class="text-muted">No daily challenge is available right now.</p>';
     }
 }
 

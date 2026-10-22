@@ -10,6 +10,7 @@ import com.dsa.assistant.repository.ProblemRepository;
 import com.dsa.assistant.repository.ProgressRepository;
 import com.dsa.assistant.repository.TopicRepository;
 import com.dsa.assistant.repository.UserRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class RecommendationService {
         this.userRepository = userRepository;
     }
 
+    @Cacheable(value = "recommendations", key = "#userId")
     public RecommendationResponse getRecommendation(Long userId) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
