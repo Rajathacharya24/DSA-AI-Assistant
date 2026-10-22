@@ -66,8 +66,8 @@ public class PracticeService {
         );
 
         PracticeValidationResponse response = new PracticeValidationResponse();
-        response.setBestCase("Best case: the algorithm behaves efficiently when inputs are already favorable or minimal.");
-        response.setWorstCase("Worst case: the algorithm should still satisfy the constraints even with the largest input size.");
+        response.setBestCase("best case: the algorithm behaves efficiently when inputs are already favorable or minimal.");
+        response.setWorstCase("worst case: the algorithm should still satisfy the constraints even with the largest input size.");
         response.setReasoning("Before submission, verify the approach, edge cases, and complexity to ensure the logic is valid and robust.");
         response.setChecklist(checklist);
         response.setScore(8);
