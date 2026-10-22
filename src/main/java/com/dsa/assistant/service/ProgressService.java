@@ -102,7 +102,7 @@ public class ProgressService {
         return progressRepository.findByUserId(userId);
     }
 
-    @CacheEvict(value = "user-progress", key = "#userId")
+    @CacheEvict(value = {"user-progress", "recommendations", "daily-challenges"}, allEntries = true)
     public void incrementHintsUsed(Long userId, Long problemId) {
         Optional<Progress> optionalProgress = progressRepository.findByUserIdAndProblemId(userId, problemId);
 
@@ -124,7 +124,7 @@ public class ProgressService {
         progressRepository.save(progress);
     }
 
-    @CacheEvict(value = "user-progress", key = "#userId")
+    @CacheEvict(value = {"user-progress", "recommendations", "daily-challenges"}, allEntries = true)
     public void updateProgressStatus(Long userId, Long problemId, boolean isCorrect) {
         Optional<Progress> optionalProgress = progressRepository.findByUserIdAndProblemId(userId, problemId);
 
